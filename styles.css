@@ -2,4 +2,32 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  background-color: rgb(55, 119, 98);
+  background-image: url("akshay-chauhan-qBUU6wsgK6A-unsplash.jpg");
+}
+
+h1 {
+  font-family:fantasy;
+  text-align: center;
+  font-size: 6em;
+  color: rgb(255, 255, 255);
+}
+
+form {
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  text-align: center;
+  font-size: 3em;
+  color: rgb(255, 255, 255);
+}
+section {
+  color: white;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin-left: 2em;
+  border-style: dashed;
+}
+
+button {
+  color: white;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin-left: 2em;
 }
