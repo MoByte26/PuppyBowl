@@ -22,29 +22,33 @@ const fetchAllPlayers = async () => {
   }
 };
 
+// const fetchSinglePlayer = async (playerId) => {
+//   try {
+//   } catch (err) {
+//     console.error(`Oh no, trouble fetching player #${playerId}!`, err);
+//   }
+// };
+
 const fetchSinglePlayer = async (playerId) => {
   try {
+    const response = await fetch(`${APIURL}/players/${playerId}`);
+    const result = await response.json();
+    if (result.error) throw result.error;
+    return result.data.player;
   } catch (err) {
     console.error(`Oh no, trouble fetching player #${playerId}!`, err);
   }
 };
 
 const addNewPlayer = async (playerObj) => {
-  
-  // const string1 = 'hello'
-  // const string2 = 'monica';
-  // const string3 = string1 + ' ' + string2; // hello monica // String Concatenation
-  // const string4 = `${string1} + ${string2}` // hello monica // Template Literal;
-
   try {
     const newPlayerResponse = await fetch(`${APIURL}/players`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-      }, 
-      body: JSON.stringify(playerObj)
-    }
-  );
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(playerObj),
+    });
     const result = await newPlayerResponse.json();
   } catch (err) {
     console.error("Oops, something went wrong with adding that player!", err);
@@ -53,15 +57,12 @@ const addNewPlayer = async (playerObj) => {
 
 const removePlayer = async (playerId) => {
   try {
-    const response = await fetch(
-      // https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}/players/${WHATEVER THE PLAYER ID ENDS UP BEING}
-        `${APIURL}/players/${playerId}`,
-        {
-          method: 'DELETE',
-        }
-      );xs
-      const result = await response.json();
-      console.log(result);
+    const response = await fetch(`${APIURL}/players/${playerId}`, {
+      method: "DELETE",
+    });
+    const result = await response.json();
+    if (result.error) throw result.error;
+    return;
   } catch (err) {
     console.error(
       `Whoops, trouble removing player #${playerId} from the roster!`,
@@ -92,37 +93,37 @@ const removePlayer = async (playerId) => {
  */
 const renderAllPlayers = (playerList) => {
   try {
-    const template = playerList
-      .forEach(({id, name, breed, status, imageUrl, teamId, cohortId}) => {
+    const template = playerList.forEach(
+      ({ id, name, breed, status, imageUrl, teamId, cohortId }) => {
         //SINGLE PUPPY CONTAINER
-        const puppyContainer = document.createElement('div');
-        puppyContainer.innerHTML =`
+        const puppyContainer = document.createElement("div");
+        puppyContainer.innerHTML = `
         <section>
           <img src="${imageUrl}"/>
-          <p>${imageUrl} currentUrl passed from API</p>
             <h2>id: ${id}</h2>
             <h2>name: ${name}</h2>
             <h2>breed: ${breed}</h2>
             <h2>status: ${status}</h2>
             <h2>teamId: ${teamId}</h2>
             <h2>cohortId: ${cohortId}</h2>
-            </section>`;
-            //ALL PLAYERS
-            playerContainer.append(puppyContainer);
-            const deleteButton = document.createElement('button');
-            //DELETE BUTTON FOR SPECIFIC PUPPY 
-            deleteButton.textContent = 'DELETE'
-            //ADD CALLBACK TO DELETE BUTTON AND PASS IN ID SOMEHOW
-            deleteButton.addEventListener('click', () => {
-            //   console.log({name, id, status})
-            removePlayer(id)
-            })
-            puppyContainer.append(deleteButton)
-      })
+        </section>`;
 
+        //ALL PLAYERS
+        playerContainer.append(puppyContainer);
+        const deleteButton = document.createElement("button");
 
-      // .join("");
-    // playerContainer.innerHTML = template;
+        //DELETE BUTTON FOR SPECIFIC PUPPY
+        deleteButton.textContent = "DELETE";
+
+        puppyContainer.append(deleteButton);
+
+        deleteButton.addEventListener("click", async () => {
+          await removePlayer(id);
+          const players = await fetchAllPlayers();
+          renderAllPlayers(players);
+        });
+      }
+    );
   } catch (err) {
     console.error("Uh oh, trouble rendering players!", err);
   }
@@ -135,8 +136,8 @@ const renderAllPlayers = (playerList) => {
 const renderNewPlayerForm = () => {
   try {
     //USING JS TO CREATE A FORM
-    const formElement = document.createElement('form');
-const formTemplate = `
+    const formElement = document.createElement("form");
+    const formTemplate = `
 <label>name</label>
 <input name="name"/>
 <label>breed</label>
@@ -150,22 +151,24 @@ const formTemplate = `
 <option value="bench">bench</option>
 </select>
 <button type="submit"> SUBMIT </button
-`
-//SETTING INNER HTML TO OUR TEMPLATE
-formElement.innerHTML = formTemplate;
-//ADDING EVENT LISTENER
-formElement.addEventListener(('submit'), (event) => {
-event.preventDefault();
-const name = event.target.name.value;
-const breed = event.target.breed.value;
-const status = event.target.status.value;
-const imgUrl = event.target.imgurl.value;
-addNewPlayer({name,breed,status, imgUrl: imgUrl});
+`;
+    //SETTING INNER HTML TO OUR TEMPLATE
+    formElement.innerHTML = formTemplate;
+    //ADDING EVENT LISTENER
+    formElement.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const name = event.target.name.value;
+      const breed = event.target.breed.value;
+      const status = event.target.status.value;
+      const imgUrl = event.target.imgurl.value;
 
-})
+      await addNewPlayer({ name, breed, status, imageUrl: imgUrl });
+      const players = await fetchAllPlayers();
+      renderAllPlayers(players);
+    });
 
-//THIS IS THE DIV CONTAINING THE FORM
-newPlayerFormContainer.append(formElement)
+    //THIS IS THE DIV CONTAINING THE FORM
+    newPlayerFormContainer.append(formElement);
   } catch (err) {
     console.error("Uh oh, trouble rendering the new player form!", err);
   }

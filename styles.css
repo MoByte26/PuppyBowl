@@ -2,8 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  background-color: rgb(55, 119, 98);
-  background-image: url("akshay-chauhan-qBUU6wsgK6A-unsplash.jpg");
+  background-color: rgb(255, 189, 35);
 }
 
 h1 {
@@ -22,12 +21,26 @@ form {
 section {
   color: white;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  margin-left: 2em;
+  margin-left: 30em;
+  margin-right: 30em;
   border-style: dashed;
+  border-width: .5em;
+  border-color: rgb(255, 136, 0);
+  text-align: center;
 }
 
 button {
   color: white;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin-left: 2em;
+}
+
+all-players-container {
+  height: 5em;
+  width: 5em;
+}
+
+img {
+  height: 20em;
+  width:20em
 }
