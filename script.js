@@ -97,7 +97,28 @@ const renderAllPlayers = (playerList) => {
       ({ id, name, breed, status, imageUrl, teamId, cohortId }) => {
         //SINGLE PUPPY CONTAINER
         const puppyContainer = document.createElement("div");
+
+        async (event) => {
+          event.preventDefault();
+          renderAllPlayers(detailsButton);
+          detailsButton.disabled = false;
+        };
+        let detailsButton = [
+          ...document.getElementsByClassName("detail-button"),
+        ];
+
+        // detailButton.forEach((button) => {
+        //   button.addEventListener("click", async () => {
+        //     const players = await fetchAllPlayers(button.dataset.id);
+        //     renderAllPlayers(players);
+        //   });
+        // });
+
         puppyContainer.innerHTML = `
+        <div class="player">
+          <button class="details-button" disabled="">See Details</button>
+        </div>
+
         <section>
           <img src="${imageUrl}"/>
             <h2>id: ${id}</h2>
